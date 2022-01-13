@@ -18,7 +18,7 @@ class CurrenciesController < ApplicationController
     currency = Currency.new(currency_params)
 
     if currency.save
-      json_response({currency: currency})
+      json_response({currency: currency}, :created)
     else
       json_response({errors: currency.errors}, :unprocessable_entity)
     end

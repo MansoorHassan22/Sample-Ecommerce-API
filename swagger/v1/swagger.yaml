@@ -64,11 +64,105 @@ paths:
       responses:
         '200':
           description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
     delete:
       summary: delete currency
       tags:
       - Currency
       description: Deletes a Single Currency Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+  "/stores":
+    get:
+      summary: list stores
+      tags:
+      - Store
+      description: Get all stores
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create store
+      tags:
+      - Store
+      description: Create new Store
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                currency_id:
+                  type: integer
+              required:
+              - name
+              - currency_id
+  "/stores/{id}":
+    get:
+      summary: show store
+      tags:
+      - Store
+      description: Get Detail of Single Store Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update store
+      tags:
+      - Store
+      description: Updates a Single Store Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                currency_id:
+                  type: integer
+    delete:
+      summary: delete store
+      tags:
+      - Store
+      description: Deletes a Single Store Record
       parameters:
       - name: id
         in: path

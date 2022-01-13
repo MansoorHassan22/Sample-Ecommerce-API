@@ -1,12 +1,12 @@
 require 'swagger_helper'
 
-RSpec.describe 'currencies', type: :request do
+RSpec.describe 'stores', type: :request do
 
-  path '/currencies' do
+  path '/stores' do
 
-    get('list currencies') do
-      tags 'Currency'
-      description 'Get all currencies'
+    get('list stores') do
+      tags 'Store'
+      description 'Get all stores'
       consumes 'application/json'
       response(200, 'successful') do
 
@@ -21,17 +21,17 @@ RSpec.describe 'currencies', type: :request do
       end
     end
 
-    post('create currency') do
-      tags 'Currency'
-      description 'Create new Currency'
+    post('create store') do
+      tags 'Store'
+      description 'Create new Store'
       consumes 'application/json'
-      parameter name: :currency, in: :body, schema: {
+      parameter name: :store, in: :body, schema: {
         type: :object,
         properties: {
           name: { type: :string },
-          code: { type: :string }
+          currency_id: { type: :integer }
         },
-        required: [ 'name', 'code' ]
+        required: [ 'name', 'currency_id' ]
       }
       response(200, 'successful') do
 
@@ -47,11 +47,11 @@ RSpec.describe 'currencies', type: :request do
     end
   end
 
-  path '/currencies/{id}' do
+  path '/stores/{id}' do
 
-    get('show currency') do
-      tags 'Currency'
-      description 'Get Detail of Single Currency Record'
+    get('show store') do
+      tags 'Store'
+      description 'Get Detail of Single Store Record'
       consumes 'application/json'
       parameter name: 'id', in: :path, type: :string
       response(200, 'successful') do
@@ -68,16 +68,16 @@ RSpec.describe 'currencies', type: :request do
       end
     end
 
-    put('update currency') do
-      tags 'Currency'
-      description 'Update Single Currency Record'
+    put('update store') do
+      tags 'Store'
+      description 'Updates a Single Store Record'
       consumes 'application/json'
       parameter name: 'id', in: :path, type: :string
-      parameter name: :currency, in: :body, schema: {
+      parameter name: :store, in: :body, schema: {
         type: :object,
         properties: {
           name: { type: :string },
-          code: { type: :string }
+          currency_id: { type: :integer }
         }
       }
       response(200, 'successful') do
@@ -94,9 +94,9 @@ RSpec.describe 'currencies', type: :request do
       end
     end
 
-    delete('delete currency') do
-      tags 'Currency'
-      description 'Deletes a Single Currency Record'
+    delete('delete store') do
+      tags 'Store'
+      description 'Deletes a Single Store Record'
       consumes 'application/json'
       parameter name: 'id', in: :path, type: :string
       response(200, 'successful') do
