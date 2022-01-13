@@ -28,9 +28,16 @@ gem 'rack-cors'
 # For env variables
 gem "figaro"
 
+gem 'rswag-api'
+gem 'rswag-ui'
+
+gem 'multi_json', '1.7.8' 
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails'
+  gem 'rswag-specs'
 end
 
 group :development do

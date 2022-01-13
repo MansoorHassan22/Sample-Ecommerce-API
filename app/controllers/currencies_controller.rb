@@ -3,40 +3,40 @@ class CurrenciesController < ApplicationController
 
   # GET /currencies
   def index
-    raise(ExceptionHandler::BadRequest, Message.missing_params) if params[:role].blank?
-    @currencies = Currency.all
+    currencies = Currency.all
 
-    render json: @currencies
+    json_response({currencies: currencies})
   end
 
   # GET /currencies/1
   def show
-    render json: @currency
+    json_response({currency: @currency})
   end
 
   # POST /currencies
   def create
-    @currency = Currency.new(currency_params)
+    currency = Currency.new(currency_params)
 
-    if @currency.save
-      render json: @currency, status: :created, location: @currency
+    if currency.save
+      json_response({currency: currency})
     else
-      render json: @currency.errors, status: :unprocessable_entity
+      json_response({errors: currency.errors}, :unprocessable_entity)
     end
   end
 
   # PATCH/PUT /currencies/1
   def update
     if @currency.update(currency_params)
-      render json: @currency
+      json_response({currency: @currency})
     else
-      render json: @currency.errors, status: :unprocessable_entity
+      json_response({errors: @currency.errors}, :unprocessable_entity)
     end
   end
 
   # DELETE /currencies/1
   def destroy
     @currency.destroy
+    json_response(message: "Currency deleted successfully")
   end
 
   private
@@ -47,6 +47,6 @@ class CurrenciesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def currency_params
-      params.fetch(:currency, {})
+      params.require(:currency).permit( :name, :code)
     end
 end
