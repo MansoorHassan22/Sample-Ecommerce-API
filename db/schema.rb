@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_13_124842) do
+ActiveRecord::Schema.define(version: 2022_01_13_181617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,28 @@ ActiveRecord::Schema.define(version: 2022_01_13_124842) do
     t.string "code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.string "name"
+    t.boolean "is_product_type"
+    t.boolean "is_percentage_type"
+    t.integer "minimum_products"
+    t.integer "free_products"
+    t.integer "maximum_products"
+    t.integer "percentage"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "product_discounts", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "discount_id", null: false
+    t.boolean "is_active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discount_id"], name: "index_product_discounts_on_discount_id"
+    t.index ["product_id"], name: "index_product_discounts_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -40,6 +62,8 @@ ActiveRecord::Schema.define(version: 2022_01_13_124842) do
     t.index ["currency_id"], name: "index_stores_on_currency_id"
   end
 
+  add_foreign_key "product_discounts", "discounts"
+  add_foreign_key "product_discounts", "products"
   add_foreign_key "products", "stores"
   add_foreign_key "stores", "currencies"
 end

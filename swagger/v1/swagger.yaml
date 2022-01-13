@@ -88,6 +88,143 @@ paths:
       responses:
         '200':
           description: successful
+  "/discounts":
+    get:
+      summary: list discounts
+      tags:
+      - Discount
+      description: Get all Discounts
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create discount
+      tags:
+      - Discount
+      description: Create new Discount
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                is_percentage_type:
+                  type: boolean
+                is_product_type:
+                  type: boolean
+                minimum_products:
+                  type: integer
+                maximum_products:
+                  type: integer
+                free_products:
+                  type: integer
+                percentage:
+                  type: integer
+                product_ids:
+                  type: array
+                  items: []
+              required:
+              - name
+              - minimum_products
+  "/discounts/{id}":
+    get:
+      summary: show discount
+      tags:
+      - Discount
+      description: et Detail of Single Discount Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update discount
+      tags:
+      - Discount
+      description: Updates a Single Discount Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                is_percentage_type:
+                  type: boolean
+                is_product_type:
+                  type: boolean
+                minimum_products:
+                  type: integer
+                maximum_products:
+                  type: integer
+                free_products:
+                  type: integer
+                percentage:
+                  type: integer
+              required:
+              - name
+              - minimum_products
+    delete:
+      summary: delete discount
+      tags:
+      - Discount
+      description: Deletes a Single Discount Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+  "/discounts/{id}/add_products":
+    post:
+      summary: add products to discounts
+      tags:
+      - Discount
+      description: Add products against a discount
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_ids:
+                  type: array
+                  items: []
+              required:
+              - name
+              - minimum_products
   "/products":
     get:
       summary: list products
@@ -190,6 +327,30 @@ paths:
       tags:
       - Product
       description: Calculates price for all the items present in cart
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cart:
+                  type: array
+                  items:
+                    properties:
+                      product_id:
+                        type: integer
+                      quantity:
+                        type: integer
+  "/products/price_check_with_discount":
+    post:
+      summary: price check with discount
+      tags:
+      - Product
+      description: Calculates price for all the items present in cart with discounts
       parameters: []
       responses:
         '200':

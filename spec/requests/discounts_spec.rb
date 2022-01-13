@@ -1,12 +1,12 @@
 require 'swagger_helper'
 
-RSpec.describe 'products', type: :request do
+RSpec.describe 'discounts', type: :request do
 
-  path '/products' do
+  path '/discounts' do
 
-    get('list products') do
-      tags 'Product'
-      description 'Get all products'
+    get('list discounts') do
+      tags 'Discount'
+      description 'Get all Discounts'
       consumes 'application/json'
       response(200, 'successful') do
 
@@ -21,19 +21,26 @@ RSpec.describe 'products', type: :request do
       end
     end
 
-    post('create product') do
-      tags 'Product'
-      description 'Create new Product against a Store'
+    post('create discount') do
+      tags 'Discount'
+      description 'Create new Discount'
       consumes 'application/json'
-      parameter name: :product, in: :body, schema: {
+      parameter name: :discount, in: :body, schema: {
         type: :object,
         properties: {
           name: { type: :string },
-          code: { type: :string },
-          price: { type: :string, format: :decimal },
-          store_id: { type: :integer }
+          is_percentage_type: { type: :boolean },
+          is_product_type: { type: :boolean },
+          minimum_products: { type: :integer },
+          maximum_products: { type: :integer },
+          free_products: { type: :integer },
+          percentage: { type: :integer },
+          product_ids: {
+            type: :array,
+            items: [],
+          },
         },
-        required: [ 'name', 'code', 'price', 'store_id' ]
+        required: [ 'name', 'minimum_products' ]
       }
       response(200, 'successful') do
 
@@ -49,11 +56,11 @@ RSpec.describe 'products', type: :request do
     end
   end
 
-  path '/products/{id}' do
+  path '/discounts/{id}' do
 
-    get('show product') do
-      tags 'Product'
-      description 'Get Detail of Single Product Record'
+    get('show discount') do
+      tags 'Discount'
+      description 'et Detail of Single Discount Record'
       consumes 'application/json'
       parameter name: 'id', in: :path, type: :string
       response(200, 'successful') do
@@ -70,19 +77,23 @@ RSpec.describe 'products', type: :request do
       end
     end
 
-    put('update product') do
-      tags 'Product'
-      description 'Updates a Single Product Record'
+    put('update discount') do
+      tags 'Discount'
+      description 'Updates a Single Discount Record'
       consumes 'application/json'
       parameter name: 'id', in: :path, type: :string
-      parameter name: :product, in: :body, schema: {
+      parameter name: :discount, in: :body, schema: {
         type: :object,
         properties: {
           name: { type: :string },
-          code: { type: :string },
-          price: { type: :string, format: :decimal },
-          store_id: { type: :integer }
-        }
+          is_percentage_type: { type: :boolean },
+          is_product_type: { type: :boolean },
+          minimum_products: { type: :integer },
+          maximum_products: { type: :integer },
+          free_products: { type: :integer },
+          percentage: { type: :integer }
+        },
+        required: [ 'name', 'minimum_products' ]
       }
       response(200, 'successful') do
         let(:id) { '123' }
@@ -98,9 +109,10 @@ RSpec.describe 'products', type: :request do
       end
     end
 
-    delete('delete product') do
-      tags 'Product'
-      description 'Deletes a Single Product Record'
+    
+    delete('delete discount') do
+      tags 'Discount'
+      description 'Deletes a Single Discount Record'
       consumes 'application/json'
       parameter name: 'id', in: :path, type: :string
       response(200, 'successful') do
@@ -118,25 +130,22 @@ RSpec.describe 'products', type: :request do
     end
   end
 
-  path '/products/price_check' do
+  path '/discounts/{id}/add_products' do
 
-    post('price check') do
-      tags 'Product'
-      description 'Calculates price for all the items present in cart'
+    post('add products to discounts') do
+      tags 'Discount'
+      description 'Add products against a discount'
       consumes 'application/json'
-      parameter name: :cart, in: :body, schema: {
+      parameter name: 'id', in: :path, type: :string
+      parameter name: :discount, in: :body, schema: {
         type: :object,
         properties: {
-          cart: {
+          product_ids: {
             type: :array,
-            items: {
-              properties: {
-                product_id: { type: :integer },
-                quantity: { type: :integer }
-              }
-            },
+            items: [],
           },
-        }
+        },
+        required: [ 'name', 'minimum_products' ]
       }
       response(200, 'successful') do
         let(:id) { '123' }
@@ -153,41 +162,6 @@ RSpec.describe 'products', type: :request do
     end
 
   end
-
-  path '/products/price_check_with_discount' do
-
-    post('price check with discount') do
-      tags 'Product'
-      description 'Calculates price for all the items present in cart with discounts'
-      consumes 'application/json'
-      parameter name: :cart, in: :body, schema: {
-        type: :object,
-        properties: {
-          cart: {
-            type: :array,
-            items: {
-              properties: {
-                product_id: { type: :integer },
-                quantity: { type: :integer }
-              }
-            },
-          },
-        }
-      }
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-        run_test!
-      end
-    end
-
-  end
-
 end
+
+
