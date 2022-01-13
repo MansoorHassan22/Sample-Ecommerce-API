@@ -28,10 +28,16 @@ gem 'rack-cors'
 # For env variables
 gem "figaro"
 
+# For API Documentation
 gem 'rswag-api'
 gem 'rswag-ui'
-
 gem 'multi_json', '1.7.8' 
+
+# For price formatting
+gem 'money'
+
+# For active records response structuring
+gem 'blueprinter'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -4,12 +4,14 @@ class StoresController < ApplicationController
   # GET /stores
   def index
     stores = Store.all
-    json_response({stores: stores})
+    response = {stores: StoreBlueprint.render_as_json(stores) , count: stores.count}
+    json_response(response)
   end
 
   # GET /stores/1
   def show
-    json_response({store: @store})
+    response = {store: StoreBlueprint.render_as_json(@store, view: :detail)}
+    json_response(response)
   end
 
   # POST /stores
@@ -17,7 +19,8 @@ class StoresController < ApplicationController
     store = Store.new(store_params)
 
     if store.save
-      json_response({store: store}, :created)
+      response = {store: StoreBlueprint.render_as_json(store)}
+      json_response(response, :created)
     else
       json_response({errors: store.errors}, :unprocessable_entity)
     end
@@ -26,7 +29,8 @@ class StoresController < ApplicationController
   # PATCH/PUT /stores/1
   def update
     if @store.update(store_params)
-      json_response({store: @store})
+      response = {store: StoreBlueprint.render_as_json(@store)}
+      json_response(response)
     else
       json_response({errors: @store.errors}, :unprocessable_entity)
     end

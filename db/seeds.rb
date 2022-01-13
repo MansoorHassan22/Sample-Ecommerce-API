@@ -7,4 +7,12 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-Currency.create(name: "Dollar", code: "USD")
+Currency.create(name: "Euros", code: "EUR")
+currency = Currency.where(code: "EUR").first
+
+Store.create(name: "Test Store", currency_id: currency.id)
+store = Store.first
+
+Product.create(name: "Reedsy T-shirt", code: "TSHIRT", price: 15.00, store_id: store.id )
+Product.create(name: "Reedsy Mug", code: "MUG", price: 6.00, store_id: store.id )
+Product.create(name: "Reedsy Hoodie", code: "HOODIE", price: 20.00, store_id: store.id )

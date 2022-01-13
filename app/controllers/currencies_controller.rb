@@ -4,13 +4,14 @@ class CurrenciesController < ApplicationController
   # GET /currencies
   def index
     currencies = Currency.all
-
-    json_response({currencies: currencies})
+    response = {currencies: CurrencyBlueprint.render_as_json(currencies) , count: currencies.count}
+    json_response(response)
   end
 
   # GET /currencies/1
   def show
-    json_response({currency: @currency})
+    response = {currencies: CurrencyBlueprint.render_as_json(@currency)}
+    json_response(response)
   end
 
   # POST /currencies
@@ -18,7 +19,8 @@ class CurrenciesController < ApplicationController
     currency = Currency.new(currency_params)
 
     if currency.save
-      json_response({currency: currency}, :created)
+      response = {currency: CurrencyBlueprint.render_as_json(currency)}
+      json_response(response, :created)
     else
       json_response({errors: currency.errors}, :unprocessable_entity)
     end

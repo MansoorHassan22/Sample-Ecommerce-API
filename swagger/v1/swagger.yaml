@@ -88,6 +88,126 @@ paths:
       responses:
         '200':
           description: successful
+  "/products":
+    get:
+      summary: list products
+      tags:
+      - Product
+      description: Get all products
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create product
+      tags:
+      - Product
+      description: Create new Product against a Store
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
+                price:
+                  type: string
+                  format: decimal
+                store_id:
+                  type: integer
+              required:
+              - name
+              - code
+              - price
+              - store_id
+  "/products/{id}":
+    get:
+      summary: show product
+      tags:
+      - Product
+      description: Get Detail of Single Product Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update product
+      tags:
+      - Product
+      description: Updates a Single Product Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
+                price:
+                  type: string
+                  format: decimal
+                store_id:
+                  type: integer
+    delete:
+      summary: delete product
+      tags:
+      - Product
+      description: Deletes a Single Product Record
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+  "/products/price_check":
+    post:
+      summary: price check
+      tags:
+      - Product
+      description: Calculates price for all the items present in cart
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cart:
+                  type: array
+                  items:
+                    properties:
+                      product_id:
+                        type: integer
+                      quantity:
+                        type: integer
   "/stores":
     get:
       summary: list stores
@@ -121,7 +241,7 @@ paths:
               - currency_id
   "/stores/{id}":
     get:
-      summary: show store
+      summary: show store detail along with products
       tags:
       - Store
       description: Get Detail of Single Store Record
